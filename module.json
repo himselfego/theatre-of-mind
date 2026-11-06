@@ -1,0 +1,61 @@
+{
+  "id": "theatre-of-mind",
+  "title": "Theatre of Mind",
+  "description": "Theatre portraits, persona library, and location dock.",
+  "version": "1.0.0",
+  "url": "https://github.com/himselfego/theatre-of-mind",
+  "bugs": "https://github.com/himselfego/theatre-of-mind/issues",
+  "manifest": "https://github.com/himselfego/theatre-of-mind/releases/latest/download/module.json",
+  "download": "https://github.com/himselfego/theatre-of-mind/releases/download/v1.0.0/theatre-of-mind.zip",
+  "library": "false",
+  "socket": true,
+  "compatibility": {
+    "minimum": 14,
+    "verified": 14
+  },
+  "authors": [
+    {
+      "name": "Ginzzzu",
+      "flags": {}
+    },
+    {
+      "name": "Oxy949",
+      "flags": {}
+    },
+    {
+      "name": "himselfego",
+      "flags": {}
+    }
+  ],
+  "relationships": {
+    "systems": [],
+    "requires": []
+  },
+  "esmodules": [
+    "scripts/entry.js"
+  ],
+  "scripts": [],
+  "styles": [
+    "styles/portraits.css",
+    "styles/npc-dock.css",
+    "styles/portrait-config.css",
+    "styles/emotions.css",
+    "styles/library.css",
+    "styles/locations.css",
+    "styles/personas.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "ru",
+      "name": "Русский",
+      "path": "lang/ru.json"
+    }
+  ],
+  "license": "MIT",
+  "readme": "README.md"
+}

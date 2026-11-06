@@ -1,0 +1,52 @@
+name: Release
+
+# Релиз создаётся при пуше тега вида v1.2.3.
+# Foundry обновляет модуль по ссылке `manifest` из module.json.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checks
+        run: |
+          jq empty module.json lang/*.json
+          find scripts -name '*.js' -print0 | xargs -0 -n1 node --check
+
+      - name: Set version and URLs in module.json
+        env:
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          VERSION="${TAG#v}"
+          BASE="https://github.com/${REPO}"
+          jq --arg v "$VERSION" \
+             --arg url "$BASE" \
+             --arg bugs "$BASE/issues" \
+             --arg manifest "$BASE/releases/latest/download/module.json" \
+             --arg download "$BASE/releases/download/${TAG}/theatre-of-mind.zip" \
+             '.version = $v | .url = $url | .bugs = $bugs | .manifest = $manifest | .download = $download' \
+             module.json > module.tmp.json
+          mv module.tmp.json module.json
+          jq '{version, manifest, download}' module.json
+
+      - name: Package
+        run: |
+          zip -r theatre-of-mind.zip module.json LICENSE README.md scripts styles templates lang
+          unzip -l theatre-of-mind.zip | tail -n 1
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            module.json
+            theatre-of-mind.zip
+          generate_release_notes: true

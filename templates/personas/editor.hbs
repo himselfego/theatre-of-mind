@@ -1,0 +1,84 @@
+<div class="tom-persona-editor ginzzzu-portrait-config">
+  <div class="tom-persona-editor-main">
+    <div class="tom-persona-editor-preview" data-preview>
+      <img alt="" hidden>
+      <p class="notes" data-preview-empty>{{localize "GINZZZUPORTRAITS.Personas.previewEmpty"}}</p>
+    </div>
+
+    <div class="tom-persona-editor-fields">
+      <div class="form-group">
+        <label>{{localize "GINZZZUPORTRAITS.Personas.image"}}</label>
+        <div class="tom-persona-file">
+          <input type="text" data-field="image" value="{{image}}">
+          <button type="button" data-tom="pick-image" title="{{localize "GINZZZUPORTRAITS.Personas.image"}}">
+            <i class="fas fa-file-image"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{localize "GINZZZUPORTRAITS.Personas.name"}}</label>
+        <input type="text" data-field="name" value="{{name}}">
+      </div>
+
+      <div class="form-group">
+        <label>{{localize "GINZZZUPORTRAITS.Personas.folder"}}</label>
+        <select data-field="folder">
+          {{#each folders}}
+            <option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <label class="tom-persona-check">
+        <input type="checkbox" data-field="isPlayer" {{#if isPlayer}}checked{{/if}}>
+        <span>{{localize "GINZZZUPORTRAITS.Personas.isPlayer"}}</span>
+      </label>
+
+      <div class="form-group">
+        <label>{{localize "GINZZZUPORTRAITS.Personas.boundActor"}}</label>
+        <div class="tom-persona-file">
+          <select data-field="boundActorUuid">
+            <option value="">{{localize "GINZZZUPORTRAITS.Personas.boundActorNone"}}</option>
+            {{#each actors}}
+              <option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+            {{/each}}
+            {{#if brokenBind}}
+              <option value="{{boundActorUuid}}" selected>{{localize "GINZZZUPORTRAITS.Personas.boundActorMissing"}}</option>
+            {{/if}}
+          </select>
+          <button type="button" data-tom="clear-bind" title="{{localize "GINZZZUPORTRAITS.Personas.clearBind"}}">
+            <i class="fas fa-unlink"></i>
+          </button>
+        </div>
+        {{#if boundActorUuid}}
+          <button type="button" data-tom="open-sheet" {{#if brokenBind}}disabled{{/if}}>
+            <i class="fas fa-user"></i>
+            {{localize "GINZZZUPORTRAITS.Personas.openSheet"}}
+          </button>
+        {{/if}}
+      </div>
+
+      <div class="form-group portrait-height-multiplier-section">
+        <label>{{localize "GINZZZUPORTRAITS.PortraitConfig.portraitHeightMultiplier"}}</label>
+        <div class="form-fields">
+          <input type="range" data-field="portraitHeightMultiplier" value="{{portraitHeightMultiplier}}" min="0" max="2" step="0.01">
+          <input type="number" data-sync="portraitHeightMultiplier" value="{{portraitHeightMultiplier}}" min="0" max="2" step="0.01">
+        </div>
+      </div>
+
+      <div class="form-group portrait-breathing-multiplier-section">
+        <label>{{localize "GINZZZUPORTRAITS.PortraitConfig.portraitBreathingMultiplier"}}</label>
+        <div class="form-fields">
+          <input type="range" data-field="portraitBreathingMultiplier" value="{{portraitBreathingMultiplier}}" min="0" max="3" step="0.05">
+          <input type="number" data-sync="portraitBreathingMultiplier" value="{{portraitBreathingMultiplier}}" min="0" max="3" step="0.05">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" data-tom="save">
+    <i class="fas fa-check"></i>
+    {{localize "GINZZZUPORTRAITS.Personas.save"}}
+  </button>
+</div>

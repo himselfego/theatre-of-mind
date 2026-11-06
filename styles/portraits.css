@@ -1,0 +1,409 @@
+@property --ginzzzu-flip-scale-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --shakeX {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --bobY {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --pulse {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --tilt {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --ginzzzu-drag-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --ginzzzu-manual-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --ginzzzu-drag-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --ginzzzu-manual-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --ginzzzu-manual-tilt {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --ginzzzu-manual-scale {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --ginzzzu-drag-scale {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --ginzzzu-drag-lift {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --ginzzzu-drag-tilt {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.ginzzzu-portrait-wrapper {
+  position: relative;
+  overflow: visible;
+
+  /* Точка вращения и базовое значение флипа для совместной анимации */
+  transform-origin: center center;
+  --flip-scale-x: 1;
+}
+
+.ginzzzu-portrait-wrapper > img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  image-rendering: auto;
+  transition: filter var(--tone-filter-transition, 200ms ease-out);
+}
+
+/* Центрируем точку, вокруг которой зеркалим wrapper
+   и вводим переменные для флипа и "просадки" затемнённых портретов */
+.ginzzzu-portrait-wrapper {
+  transform-origin: center center;
+  --ginzzzu-flip-scale-x: 1;
+  --ginzzzu-dim-offset-y: 0px;
+  --ginzzzu-flip-duration: 450ms;
+  --ginzzzu-flip-easing: ease-out;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#ginzzzu-portrait-layer.ginzzzu-portrait-drag-active {
+  cursor: grabbing;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-reorderable {
+  cursor: grab;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-drag-pending {
+  cursor: grab;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-dragging {
+  z-index: 2000000 !important;
+  cursor: grabbing;
+  transition:
+    --ginzzzu-flip-scale-x var(--ginzzzu-flip-duration, 450ms) var(--ginzzzu-flip-easing, ease-out) !important;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-remote-dragging {
+  transition:
+    --ginzzzu-drag-x var(--ginzzzu-remote-drag-duration, 90ms) linear,
+    --ginzzzu-drag-y var(--ginzzzu-remote-drag-duration, 90ms) linear,
+    --ginzzzu-drag-lift var(--ginzzzu-remote-drag-duration, 90ms) linear,
+    --ginzzzu-drag-tilt var(--ginzzzu-remote-drag-duration, 90ms) linear,
+    --ginzzzu-drag-scale var(--ginzzzu-remote-drag-duration, 90ms) linear,
+    --ginzzzu-flip-scale-x var(--ginzzzu-flip-duration, 450ms) var(--ginzzzu-flip-easing, ease-out) !important;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-remote-dragging {
+  cursor: default;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-dragging > img {
+  filter:
+    drop-shadow(0 22px 34px rgba(0,0,0,0.72))
+    brightness(var(--tone-brightness,1))
+    contrast(var(--tone-contrast,1))
+    saturate(var(--tone-saturate,1))
+    hue-rotate(var(--tone-blue-pre-hue,0deg))
+    sepia(var(--tone-blue-tint,0))
+    hue-rotate(var(--tone-blue-post-hue,0deg)) !important;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-drag-target::after {
+  content: "";
+  position: absolute;
+  inset: 6% 8%;
+  border-radius: 10px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(236, 214, 255, 0.42),
+    0 0 22px rgba(181, 135, 255, 0.42);
+  opacity: 0.95;
+}
+
+/* Портреты "в тени" — чуть ниже */
+div.ginzzzu-portrait-wrapper.ginzzzu-portrait-dimmed {
+  --ginzzzu-dim-offset-y: 5px;
+}
+
+/* Плашка имени портрета, всплывающая при наведении */
+/* Names container: badges are positioned here so they can sit above portraits */
+#ginzzzu-portrait-names {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100000; /* above portrait wrappers */
+}
+
+#ginzzzu-portrait-names .ginzzzu-portrait-name {
+  position: absolute;
+  left: 50%;
+  transform:
+    translateX(-50%)
+    translateY(4px);
+
+  padding: 2px 10px;
+  border-radius: 999px;
+
+  background: rgba(12, 8, 16, 0.7);
+  color: #f5ecff;
+  font-family: var(--tom-display-font, "Cormorant Garamond", serif);
+  font-size: var(--threeo-portrait-name-font-size, 25px);
+  line-height: 1.2;
+  white-space: nowrap;
+
+  pointer-events: none;
+  opacity: 0;
+
+  backdrop-filter: blur(2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
+}
+
+#ginzzzu-portrait-names .ginzzzu-portrait-name.ginzzzu-portrait-name-dragging {
+  transition: opacity 0.2s ease-out;
+}
+
+/* When visible state is toggled from JS we apply the visible class */
+#ginzzzu-portrait-names .ginzzzu-portrait-name.visible {
+  opacity: 1;
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+
+/* Always-show-names mode: JS will toggle visible state for all badges */
+
+/* Флип всей ячейки: меняем только переменную, а не transform */
+/* keep flip variable for wrapper */
+/* flipped badges: badges live in the names container so use a flipped class on the badge when needed
+  (JS will set inline transform for flipped badges, but provide a class fallback)
+  Note: wrapper flip still controlled on the wrapper element */
+
+#ginzzzu-portrait-names .ginzzzu-portrait-name.flipped {
+  transform:
+    translateX(-50%)
+    translateY(0)
+    scaleX(-1);
+}
+
+/* Inner text element for name badges so we can counter-flip text when the badge
+   itself is mirrored. This keeps glyphs readable while allowing the badge
+   layout to be flipped to match the portrait. */
+#ginzzzu-portrait-names .ginzzzu-portrait-name .ginzzzu-portrait-name-inner {
+  display: inline-block;
+  transform: none;
+  backface-visibility: hidden;
+}
+
+#ginzzzu-portrait-names .ginzzzu-portrait-name.flipped .ginzzzu-portrait-name-inner {
+  transform: scaleX(-1);
+}
+
+/* When a wrapper is flipped, set the flip CSS variable so the wrapper (and its image) flips */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-flipped {
+  --ginzzzu-flip-scale-x: -1;
+}
+
+/* Always-show-names mode: show badges via the layer -> names container */
+#ginzzzu-portrait-layer.ginzzzu-show-names-always #ginzzzu-portrait-names .ginzzzu-portrait-name {
+  opacity: 1;
+  transform:
+    translateX(-50%)
+    translateY(0);
+  pointer-events: auto;
+}
+
+/* Ensure flipped badges also flip in the "always show names" mode.
+   This selector is more specific than the generic always-show rule above
+   so it can add the scaleX(-1) when a badge has the `flipped` class. */
+#ginzzzu-portrait-layer.ginzzzu-show-names-always #ginzzzu-portrait-names .ginzzzu-portrait-name.flipped {
+  transform:
+    translateX(-50%)
+    translateY(0)
+    scaleX(-1);
+}
+
+#ginzzzu-portrait-layer.ginzzzu-show-names-always #ginzzzu-portrait-names .ginzzzu-portrait-name.flipped .ginzzzu-portrait-name-inner {
+  transform: scaleX(-1);
+}
+
+/* --- Hide UI toggle: make portraits semi-transparent and ignore pointer events --- */
+#ginzzzu-portrait-layer.ginzzzu-portrait-ui-hidden .ginzzzu-portrait-wrapper {
+  opacity: 0.35;
+  transition: opacity 180ms ease-out, filter 180ms ease-out;
+  pointer-events: none !important;
+}
+
+#ginzzzu-portrait-layer.ginzzzu-portrait-ui-hidden #ginzzzu-portrait-names .ginzzzu-portrait-name {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
+/* === UI Toggle Button Positioning === */
+#ginzzzu-portrait-ui-toggle-btn {
+  position: fixed;
+  bottom: 18px;
+  /* Default: panel expanded, chat tab active, quick chat inactive (вариант 3) */
+  /* Position: 100vw - left-sidebar - sidebar-width - button-width */
+  left: calc(100vw - var(--left-sidebar-width) - var(--sidebar-width) - var(--button-width));
+  transform: none;
+  z-index: 100500;
+  pointer-events: auto;
+  /* Match NPC dock toolbar collapse button style for visual consistency */
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  min-width: 36px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease, transform 120ms ease, left 0.3s ease-in-out;
+}
+
+/* 1. Панель свёрнута, быстрый чат не активен - минимальный отступ */
+body.ginzzzu-sidebar-present:not(.ginzzzu-sidebar-expanded) #ginzzzu-portrait-ui-toggle-btn {
+  left: calc(100vw - var(--left-sidebar-width) - var(--button-width));
+}
+
+/* 2. Панель свёрнута, быстрый чат активен - отступ на ширину быстрого чата */
+body.ginzzzu-sidebar-present:not(.ginzzzu-sidebar-expanded).ginzzzu-quick-chat-visible #ginzzzu-portrait-ui-toggle-btn {
+  left: calc(100vw - var(--left-sidebar-width) - var(--quick-chat-width) - var(--button-width) - 18px);
+}
+
+/* 5. Панель развёрнута, быстрый чат активен - отступ на ширину панели + быстрый чат + доп. 16px (имеет приоритет) */
+body.ginzzzu-sidebar-expanded.ginzzzu-quick-chat-visible #ginzzzu-portrait-ui-toggle-btn {
+  left: calc(100vw - var(--left-sidebar-width) - var(--sidebar-width) - var(--quick-chat-width) - var(--button-width) - 16px);
+}
+body.ginzzzu-sidebar-expanded.ginzzzu-sidebar-active-chat.ginzzzu-quick-chat-visible #ginzzzu-portrait-ui-toggle-btn {
+  left: calc(100vw - var(--sidebar-width) - 48px + 8px);
+}
+
+/* 4. Панель развёрнута, вкладка НЕ чат, быстрый чат не активен - отступ на ширину панели + доп. кнопки */
+body.ginzzzu-sidebar-expanded.ginzzzu-sidebar-chat-tab-present:not(.ginzzzu-sidebar-chat-tab-active).ginzzzu-quick-chat-present:not(.ginzzzu-quick-chat-visible) #ginzzzu-portrait-ui-toggle-btn {
+  left: calc(100vw - var(--left-sidebar-width) - var(--sidebar-width) - var(--button-width) - var(--extra-buttons-width));
+}
+
+#ginzzzu-portrait-ui-toggle-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(0,0,0,0.5);
+}
+
+#ginzzzu-portrait-ui-toggle-btn i {
+  font-size: 14px;
+}
+
+/* === Background Blur Effect === */
+#ginzzzu-portrait-layer {
+  --ginzzzu-blur-strength: 0px;
+  --ginzzzu-blur-speed: 400ms;
+  contain: layout style;
+}
+
+/* Keep the costly backdrop surface disabled until blur is actually needed. */
+#ginzzzu-portrait-layer::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: none;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#ginzzzu-portrait-layer.ginzzzu-portrait-blur-active::before {
+  backdrop-filter: blur(var(--ginzzzu-blur-strength));
+  opacity: 1;
+  transition: backdrop-filter var(--ginzzzu-blur-speed) ease-out;
+}
+
+/* When blur is enabled and a portrait is active, set the blur strength */
+#ginzzzu-portrait-layer.ginzzzu-portrait-blur-active {
+  --ginzzzu-blur-strength: var(--ginzzzu-blur-strength-value, 8px);
+  --ginzzzu-blur-speed: var(--ginzzzu-blur-speed-value, 400ms);
+}
+
+#ginzzzu-portrait-layer.ginzzzu-portrait-ui-hidden::before {
+  backdrop-filter: none;
+  opacity: 0;
+}
+
+body.ginzzzu-performance-mode #ginzzzu-portrait-layer::before,
+body.ginzzzu-performance-mode #ginzzzu-portrait-names .ginzzzu-portrait-name,
+body.ginzzzu-performance-mode #ginzzzu-portrait-ui-toggle-btn {
+  backdrop-filter: none !important;
+}
+
+/* === Focus Blur Effect === */
+/* When focus blur is active, enhance the background blur effect */
+#ginzzzu-portrait-layer.ginzzzu-portrait-focus-blur-active {
+  --ginzzzu-focus-blur-strength: var(--ginzzzu-focus-blur-strength-value, 16px);
+}

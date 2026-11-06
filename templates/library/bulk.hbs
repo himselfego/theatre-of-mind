@@ -1,0 +1,61 @@
+<div class="tom-lib-bulk">
+  <fieldset>
+    <legend>{{labels.bulkImport}}</legend>
+    <label class="tom-lib-check">
+      <input type="checkbox" data-field="import-subfolders" {{#if importSubfolders}}checked{{/if}}>
+      {{labels.importSubfolders}}
+    </label>
+    <label class="tom-lib-check">
+      <input type="checkbox" data-field="ignore-source" {{#if ignoreSourceFolder}}checked{{/if}}>
+      {{labels.ignoreSourceFolder}}
+    </label>
+    <div class="form-group">
+      <label>{{labels.folderPath}}</label>
+      <div class="tom-lib-file">
+        <input type="text" data-field="folder-path" value="{{folderPath}}" readonly>
+        <button type="button" data-tom="browse" title="{{labels.browseFolder}}"><i class="fas fa-folder-open"></i></button>
+        <button type="button" data-tom="refresh" title="{{labels.refresh}}"><i class="fas fa-sync"></i></button>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="tom-lib-bulk-list-wrap">
+    <legend>{{labels.bulkList}}</legend>
+    <label class="tom-lib-check">
+      <input type="checkbox" data-field="show-names" {{#if showNames}}checked{{/if}}>
+      {{labels.showNames}}
+    </label>
+    <div class="tom-lib-bulk-tools">
+      <label class="tom-lib-check">
+        <input type="checkbox" data-field="show-duplicates" {{#if showDuplicates}}checked{{/if}}>
+        {{labels.showDuplicates}}
+      </label>
+      <div class="tom-lib-bulk-select">
+        <button type="button" data-tom="select-all" title="{{labels.selectAll}}"><i class="fas fa-check"></i></button>
+        <button type="button" data-tom="select-none" title="{{labels.deselectAll}}"><i class="fas fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="tom-lib-bulk-list" data-bulk-list></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{labels.bulkSettings}}</legend>
+    <div class="form-group tom-lib-suggest">
+      <label>{{labels.targetFolder}}</label>
+      <input type="text" data-field="target-folder" value="{{targetFolderText}}" autocomplete="off">
+      <div class="tom-lib-suggestions" data-suggestions hidden>
+        {{#each folders}}
+          <button type="button" data-folder-id="{{id}}" data-name="{{name}}" data-path="{{path}}">
+            <i class="fas fa-folder"></i>
+            {{path}}
+          </button>
+        {{/each}}
+      </div>
+    </div>
+  </fieldset>
+
+  <button type="button" data-tom="commit">
+    <i class="fas fa-check"></i>
+    {{labels.importConfirm}}
+  </button>
+</div>

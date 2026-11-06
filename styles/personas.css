@@ -1,0 +1,219 @@
+.tom-persona-editor .window-content {
+  overflow: auto;
+}
+
+.tom-persona-picker .tom-lib-gallery {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-auto-rows: max-content;
+  align-items: start;
+}
+
+.tom-persona-picker .tom-lib-gallery.is-small { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+.tom-persona-picker .tom-lib-gallery.is-medium { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+.tom-persona-picker .tom-lib-gallery.is-large { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+
+.tom-persona-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: max-content;
+  isolation: isolate;
+  contain: layout paint;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+}
+
+.tom-persona-card.is-selected {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+}
+
+.tom-persona-card.is-playing {
+  box-shadow: inset 0 0 0 2px #c9a42a;
+}
+
+.tom-persona-card-thumb {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.tom-persona-card-thumb::before {
+  content: "";
+  display: block;
+  padding-top: 150%;
+}
+
+.tom-persona-card-thumb img,
+.tom-persona-bulk .tom-lib-strip-thumb img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  border: 0 !important;
+}
+
+.tom-persona-card-name {
+  padding: 6px 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tom-persona-editor .window-content .tom-persona-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tom-persona-editor-main {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.tom-persona-editor-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.tom-persona-editor-preview {
+  position: relative;
+  width: 180px;
+  height: 270px;
+  max-width: 100%;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.tom-persona-editor-preview img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  border: 0 !important;
+}
+
+.tom-persona-editor-preview .notes {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 12px;
+  text-align: center;
+}
+
+.tom-persona-editor select[data-field="folder"] {
+  width: 100%;
+}
+
+.tom-persona-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tom-persona-file input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+}
+
+.tom-persona-editor .tom-persona-file button {
+  flex: 0 0 auto;
+  width: var(--control-height, 2rem);
+  height: var(--control-height, 2rem);
+  padding: 0;
+}
+
+.tom-persona-editor .tom-persona-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+  min-height: var(--control-height, 2rem);
+}
+
+.tom-persona-editor .tom-persona-check input[type="checkbox"] {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.tom-persona-editor [data-tom="save"] {
+  width: 100%;
+}
+
+.tom-persona-bulk .tom-lib-strip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.tom-persona-bulk .tom-lib-strip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 84px;
+  padding: 0 8px 0 0;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.tom-persona-bulk .tom-lib-strip-thumb {
+  position: relative;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 84px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.tom-persona-bulk .tom-lib-strip-name {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tom-persona-bulk .tom-lib-bulk-list.show-names .tom-lib-strip {
+  min-height: 28px;
+  height: 28px;
+}
+
+.tom-persona-bulk .tom-lib-bulk-list.show-names .tom-lib-strip-thumb {
+  display: none;
+}

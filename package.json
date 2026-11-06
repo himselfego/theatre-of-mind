@@ -1,0 +1,9 @@
+{
+  "name": "theatre-of-mind",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "sync": "node tools/sync.mjs",
+    "sync:watch": "node tools/sync.mjs --watch"
+  }
+}

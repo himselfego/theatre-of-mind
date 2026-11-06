@@ -1,0 +1,316 @@
+#ginzzzu-portrait-layer .threeo-emo-toolbar {
+  position: absolute;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transform-origin: center;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+
+  --threeo-emo-inner-flip: 1;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper {
+  --threeo-emo-scale: 1;
+  --threeo-emo-intensity: 1;
+  --emotion-animation: none;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.threeo-emo-pos-top .threeo-emo-toolbar {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, calc(-70% + var(--portrait-height-offset-y, 0px)))
+             scale(var(--threeo-emo-scale))
+             scaleX(var(--threeo-emo-inner-flip, 1));
+  flex-direction: row;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.threeo-emo-pos-left .threeo-emo-toolbar {
+  left: 0;
+  top: 50%;
+  transform: translate(-60%, calc(-50% + var(--portrait-height-offset-y, 0px)))
+             scale(var(--threeo-emo-scale))
+             scaleX(var(--threeo-emo-inner-flip, 1));
+  flex-direction: column;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.threeo-emo-pos-right .threeo-emo-toolbar {
+  right: 0;
+  top: 50%;
+  transform: translate(60%, calc(-50% + var(--portrait-height-offset-y, 0px)))
+             scale(var(--threeo-emo-scale))
+             scaleX(var(--threeo-emo-inner-flip, 1));
+  flex-direction: column;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-flipped .threeo-emo-toolbar {
+  --threeo-emo-inner-flip: -1;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper:hover .threeo-emo-toolbar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#ginzzzu-portrait-layer .threeo-emo-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 3px;
+  margin: 0;
+
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  cursor: pointer;
+  outline: none;
+
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
+}
+
+#ginzzzu-portrait-layer .threeo-emo-btn:hover {
+  transform: translateY(-1px) scale(1.04);
+}
+
+#ginzzzu-portrait-layer .threeo-emo-btn.is-active {
+  transform: scale(1.08);
+  filter: brightness(1.45) drop-shadow(0 0 4px rgb(199, 199, 18));
+}
+
+#ginzzzu-portrait-layer .threeo-emo-btn .threeo-emo-emoji {
+  font-size: 22px;
+  line-height: 1;
+  filter:
+    drop-shadow(0 0 3px rgba(0,0,0,0.7))
+    drop-shadow(0 0 8px rgba(0,0,0,0.7));
+}
+
+#ginzzzu-portrait-layer .threeo-emo-toolbar .threeo-emo-config {
+  padding-left: 10px;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper[class*="emo-"] img {
+  transition: filter 200ms ease, transform 200ms ease;
+}
+
+/* ----------------------------------------------------
+   ЭФФЕКТЫ ЦВЕТКОРА ДЛЯ ПОРТРЕТОВ
+---------------------------------------------------- */
+
+/* Если пользователь установил интенсивность цвета эмоций = 0,
+   добавляем класс .threeo-emo-no-shadow — эмоционные filter'ы не применяются
+   (внимание: правило реализовано через :not() у самих селекторов эмоций) */
+
+/* 😊 Радость — тёплая желтоватая подсветка */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-joy-color:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 + 0.15 * var(--threeo-emo-intensity)))
+          saturate(calc(1 + 0.25 * var(--threeo-emo-intensity)))
+          drop-shadow(0 0 18px rgba(255, 215, 80, calc(0.6 * var(--threeo-emo-intensity)))) !important;
+}
+
+/* 😠 Агрессия — красное свечение и лёгкое увеличение контраста */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-anger-color:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 + 0.1 * var(--threeo-emo-intensity)))
+          contrast(calc(1 + 0.4 * var(--threeo-emo-intensity)))
+          saturate(calc(1 + 0.3 * var(--threeo-emo-intensity)))
+          drop-shadow(0 0 22px rgba(237, 23, 23, calc(0.55 * var(--threeo-emo-intensity)))) !important;
+}
+
+/* 😢 Печаль — холодное голубое свечение, затемнение */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-sad-color:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 - 0.15 * var(--threeo-emo-intensity)))
+          saturate(calc(1 - 0.1 * var(--threeo-emo-intensity)))
+          contrast(calc(1 + 0.1 * var(--threeo-emo-intensity)))
+          hue-rotate(calc(180deg * var(--threeo-emo-intensity)))
+          drop-shadow(0 0 20px rgba(110, 160, 255, calc(0.55 * var(--threeo-emo-intensity)))) !important;
+}
+
+/* 💖 Симпатия — розово-лиловое мягкое сияние */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-love-color:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 + 0.15 * var(--threeo-emo-intensity)))
+          saturate(calc(1 + 0.2 * var(--threeo-emo-intensity)))
+          drop-shadow(0 0 22px rgba(255, 120, 200, calc(0.55 * var(--threeo-emo-intensity)))) !important;
+}
+
+/* 😱 Страх — синеватое холодное свечение и повышенный контраст */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-fear-color:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 - 0.1 * var(--threeo-emo-intensity)))
+          saturate(calc(1 - 0.7 * var(--threeo-emo-intensity)))
+          contrast(calc(1 + 0.35 * var(--threeo-emo-intensity)))
+          hue-rotate(calc(150deg * var(--threeo-emo-intensity)))
+          drop-shadow(0 0 22px rgba(80, 120, 255, calc(0.55 * var(--threeo-emo-intensity)))) !important;
+}
+
+/* 😪 Усталость — мягкое приглушение, легкий серо-жёлтый тон */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-tired-color:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 - 0.15 * var(--threeo-emo-intensity)))
+          saturate(calc(1 - 0.88 * var(--threeo-emo-intensity)))
+          contrast(calc(1 + 0.92 * var(--threeo-emo-intensity)))
+          hue-rotate(calc(0deg * var(--threeo-emo-intensity)))
+          drop-shadow(0 0 16px rgba(200, 180, 120, calc(0.45 * var(--threeo-emo-intensity)))) !important;
+}
+
+/* 🤕 Боль — фиолетово-красноватый оттенок + контраст */
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-hurt-color:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 - 0.1 * var(--threeo-emo-intensity)))
+          saturate(calc(1 + 0.4 * var(--threeo-emo-intensity)))
+          contrast(calc(1 + 0.15 * var(--threeo-emo-intensity)))
+          hue-rotate(calc(-10deg * var(--threeo-emo-intensity)))
+          drop-shadow(0 0 22px rgba(221, 32, 32, calc(0.55 * var(--threeo-emo-intensity)))) !important;
+}
+
+/* Тут могла быть ваша эмоция */
+
+/* ----------------------------------------------------
+   КОНЕЦ ЦВЕТКОРА ДЛЯ ПОРТРЕТОВ
+---------------------------------------------------- */
+
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper[class*="custom-emo"]:not(.threeo-emo-no-shadow) img {
+  filter: brightness(calc(1 + 0.1 * var(--threeo-emo-intensity)))
+          saturate(calc(1 + 0.15 * var(--threeo-emo-intensity))) !important;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper {
+  --shakeX: 0px;
+  --bobY: 0px;
+  --pulse: 1;
+  --tilt: 0deg;
+  --ginzzzu-manual-x: 0px;
+  --ginzzzu-manual-y: 0px;
+  --ginzzzu-manual-tilt: 0deg;
+  --ginzzzu-manual-scale: 1;
+  --ginzzzu-drag-x: 0px;
+  --ginzzzu-drag-y: 0px;
+  --ginzzzu-drag-lift: 0px;
+  --ginzzzu-drag-tilt: 0deg;
+  --ginzzzu-drag-scale: 1;
+  --flip-scale-x: var(--flip-scale-x, 1);
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper {
+  transform:
+    translate(
+      calc(var(--shakeX, 0px) + var(--ginzzzu-manual-x, 0px) + var(--ginzzzu-drag-x, 0px)),
+      calc(var(--bobY, 0px) + var(--ginzzzu-dim-offset-y, 0px) + var(--ginzzzu-manual-y, 0px) + var(--ginzzzu-drag-y, 0px) + var(--ginzzzu-drag-lift, 0px))
+    )
+    scale(var(--pulse, 1))
+    scale(var(--ginzzzu-manual-scale, 1))
+    scale(var(--ginzzzu-drag-scale, 1))
+    rotate(calc(var(--tilt, 0deg) + var(--ginzzzu-manual-tilt, 0deg) + var(--ginzzzu-drag-tilt, 0deg)))
+    scaleX(var(--ginzzzu-flip-scale-x, 1));
+}
+
+/* Idle portrait motion should not compete with character-sheet text input. */
+body.ginzzzu-text-entry-active #ginzzzu-portrait-layer .ginzzzu-portrait-wrapper {
+  animation-play-state: paused !important;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-custom-motion {
+  animation: var(--emotion-animation, none) 0.45s ease-in-out infinite;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper[class*="custom-emo"] {
+  animation: var(--emotion-animation, none) 0.45s ease-in-out infinite;
+}
+
+/* ----------------------------------------------------
+   ЭФФЕКТЫ ДВИЖЕНИЯ ДЛЯ ПОРТРЕТОВ
+---------------------------------------------------- */
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-shake-motion {
+  animation: var(--emotion-animation, shake) 0.22s linear infinite;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-sag-motion {
+  animation: var(--emotion-animation, sag) 2.4s ease-in-out infinite;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-shiver-motion {
+  animation: var(--emotion-animation, shiver) 0.58s linear infinite;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-bob-motion {
+  animation: var(--emotion-animation, bob) 0.3s ease-in-out infinite;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-beat-motion {
+  animation: var(--emotion-animation, beat) 1.2s ease-in-out infinite;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-tired-motion {
+  animation: var(--emotion-animation, tired) 2.8s ease-in-out infinite;
+}
+
+#ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.emo-pulse-motion {
+  animation: var(--emotion-animation, pulse) 0.5s ease-in-out infinite;
+}
+
+/* Тут могла быть ваша аниммация */
+
+/* ----------------------------------------------------
+   КОНЕЦ ЭФФЕКТОВ ДВИЖЕНИЯ ДЛЯ ПОРТРЕТОВ
+---------------------------------------------------- */
+
+
+/* Кейфреймы, используемые эмоциями */
+@keyframes shake {
+  0%   { --shakeX: 0px; }
+  20%  { --shakeX: -2px; }
+  40%  { --shakeX: 2px; }
+  60%  { --shakeX: -1px; }
+  80%  { --shakeX: 1px; }
+  100% { --shakeX: 0px; }
+}
+
+@keyframes sag {
+  0%,100% { --bobY: 0px; }
+  50%     { --bobY: 3px; }
+}
+
+@keyframes shiver {
+  0%   { --shakeX: 0px;     --bobY: 0px; }
+  10%  { --shakeX: -1px;  --bobY: -0px; }
+  20%  { --shakeX: 1px;   --bobY: 0px; }
+  30%  { --shakeX: -1.2px;  --bobY: -0px; }
+  40%  { --shakeX: 1.2px;   --bobY: 0px; }
+  50%  { --shakeX: -1px;    --bobY: -0px; }
+  60%  { --shakeX: 1px;     --bobY: 0px; }
+  80%  { --shakeX: -1px;    --bobY: 0px; }
+  100% { --shakeX: 0px;     --bobY: 0px; }
+}
+
+@keyframes bob {
+  0%, 100% { --bobY: 0px; }
+  50%      { --bobY: 10px; }
+}
+
+@keyframes beat {
+  0%, 100% { --pulse: 1; }
+  25%      { --pulse: 1.02; }
+  50%      { --pulse: 1.04; }
+  75%      { --pulse: 1.02; }
+}
+
+@keyframes tired {
+  0%,100% { --bobY: 0px;   --tilt: 0deg; }
+  50%     { --bobY: 2px;   --tilt: -0.6deg; }
+}
+
+@keyframes pulse {
+  0%   { --pulse: 1; }
+  50%  { --pulse: 1.02; }
+  100% { --pulse: 1; }
+}

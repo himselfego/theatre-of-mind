@@ -1,6 +1,8 @@
 import { MODULE_ID, DOCK_ID } from "../core/constants.js";
 import { isTheatreStage, openTheatreScene } from "./ensureTheatreScene.js";
-import { applyDockPanelChrome, isLocationDockMode, registerDockChromeSettings } from "./dockChrome.js";
+import { applyDockPanelChrome, isEffectsDockMode, isLocationDockMode, registerDockChromeSettings } from "./dockChrome.js";
+import { buildEffectsDock, onEffectsTarget } from "./effects/dock.js";
+import { clearEffects } from "./effects/stage.js";
 import {
   buildLocationDock,
   onLocationDockClear,
@@ -176,6 +178,10 @@ import { fileToSrc } from "./personas/shared.js";
       searchTimer = setTimeout(() => applySearch(value), 200);
     });
     folderEl.addEventListener("change", e => {
+      if (isEffectsDockMode()) {
+        onEffectsTarget(e.target.value || "all");
+        return;
+      }
       if (isLocationDockMode()) {
         onLocationDockFolder(e.target.value || "all");
         return;
@@ -185,6 +191,10 @@ import { fileToSrc } from "./personas/shared.js";
 
     clearBtn.addEventListener("click", async e => {
       e.preventDefault();
+      if (isEffectsDockMode()) {
+        await clearEffects();
+        return;
+      }
       if (isLocationDockMode()) {
         await onLocationDockClear();
         return;
@@ -268,6 +278,12 @@ import { fileToSrc } from "./personas/shared.js";
     applyNpcDockLayout();
     try { if (getShowActivePortraits()) scheduleMiniDockRebuild(0); } catch {}
     applyDockPanelChrome(root);
+
+    if (isEffectsDockMode()) {
+      buildEffectsDock(root);
+      root.style.display = "";
+      return;
+    }
 
     if (isLocationDockMode()) {
       buildLocationDock(root);

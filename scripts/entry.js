@@ -12,3 +12,4 @@ import "./features/npcDock.js";
 import "./features/locations.js";
 import "./features/personas.js";
 import "./features/portraits-emotions.js";
+import "./features/effects.js";

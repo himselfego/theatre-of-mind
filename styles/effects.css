@@ -1,0 +1,197 @@
+@property --tom-fx-grayscale { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --tom-fx-sepia { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --tom-fx-saturate { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --tom-fx-contrast { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --tom-fx-brightness { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --tom-fx-hue { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+
+/* Above the portraits (z-index 1), below the Foundry panels (z-index 60). */
+#tom-fx-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#tom-fx-layer > div {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+/* Long effects: colour of the scene and the portraits */
+#board,
+#ginzzzu-portrait-layer {
+  transition:
+    --tom-fx-grayscale 600ms ease,
+    --tom-fx-sepia 600ms ease,
+    --tom-fx-saturate 600ms ease,
+    --tom-fx-contrast 600ms ease,
+    --tom-fx-brightness 600ms ease,
+    --tom-fx-hue 600ms ease;
+}
+
+body.tom-fx-graded #board,
+body.tom-fx-graded #ginzzzu-portrait-layer .ginzzzu-portrait-wrapper {
+  filter:
+    grayscale(var(--tom-fx-grayscale))
+    sepia(var(--tom-fx-sepia))
+    saturate(var(--tom-fx-saturate))
+    contrast(var(--tom-fx-contrast))
+    brightness(var(--tom-fx-brightness))
+    hue-rotate(var(--tom-fx-hue));
+}
+
+body.tom-fx-frenzy #board,
+body.tom-fx-frenzy #ginzzzu-portrait-layer {
+  --tom-fx-contrast: 1.2;
+  --tom-fx-saturate: 1.3;
+}
+
+body.tom-fx-rot #board,
+body.tom-fx-rot #ginzzzu-portrait-layer {
+  --tom-fx-saturate: 0.25;
+  --tom-fx-brightness: 0.9;
+  --tom-fx-hue: 170deg;
+}
+
+body.tom-fx-memory #board,
+body.tom-fx-memory #ginzzzu-portrait-layer {
+  --tom-fx-sepia: 0.85;
+  --tom-fx-contrast: 0.92;
+}
+
+body.tom-fx-freeze #board,
+body.tom-fx-freeze #ginzzzu-portrait-layer {
+  --tom-fx-grayscale: 1;
+  --tom-fx-brightness: 0.7;
+}
+
+body.tom-fx-freeze #ginzzzu-portrait-layer .ginzzzu-portrait-wrapper.ginzzzu-portrait-focused {
+  filter: none;
+}
+
+/* Long effects: overlays */
+#tom-fx-layer .tom-fx-vignette {
+  transition: opacity 600ms ease;
+}
+
+body.tom-fx-frenzy #tom-fx-layer .tom-fx-vignette {
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(163, 13, 18, 0.8) 80%, #5a0408 100%);
+  opacity: 1;
+  animation: tom-fx-frenzy-pulse 1.1s ease-in-out infinite;
+}
+
+body.tom-fx-frenzy.tom-fx-calm #tom-fx-layer .tom-fx-vignette {
+  animation: none;
+}
+
+body.tom-fx-rot #tom-fx-layer .tom-fx-vignette {
+  background: radial-gradient(ellipse at center, transparent 22%, rgba(2, 6, 12, 0.95) 72%);
+  opacity: 1;
+}
+
+#tom-fx-layer .tom-fx-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  transition: opacity 600ms ease;
+}
+
+body.tom-fx-memory #tom-fx-layer .tom-fx-grain {
+  opacity: 0.25;
+}
+
+/* The GM sees through the curtain to prepare the scene. */
+#tom-fx-layer .tom-fx-curtain {
+  background: #000;
+  transition: opacity 700ms ease;
+}
+
+#tom-fx-layer.is-curtain .tom-fx-curtain {
+  opacity: 1;
+}
+
+body.tom-fx-gm #tom-fx-layer.is-curtain .tom-fx-curtain {
+  opacity: 0.6;
+}
+
+/* One-shot effects */
+#tom-fx-layer .tom-fx-flash {
+  background: #fff;
+}
+
+#tom-fx-layer .tom-fx-flash.is-playing {
+  animation: tom-fx-flash 450ms ease-out;
+}
+
+#tom-fx-layer .tom-fx-heart {
+  background: radial-gradient(ellipse at center, transparent 45%, #000 100%);
+}
+
+#tom-fx-layer .tom-fx-heart.is-playing {
+  animation: tom-fx-heart 750ms ease-in-out 3;
+}
+
+.tom-fx-shake {
+  animation: tom-fx-shake 500ms linear;
+}
+
+.tom-fx-glitch {
+  animation: tom-fx-glitch 700ms steps(6);
+}
+
+@keyframes tom-fx-frenzy-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes tom-fx-flash {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes tom-fx-heart {
+  0%, 100% { opacity: 0; }
+  40% { opacity: 0.95; }
+}
+
+@keyframes tom-fx-shake {
+  10%, 50%, 90% { translate: -9px 4px; }
+  30%, 70% { translate: 9px -5px; }
+}
+
+@keyframes tom-fx-glitch {
+  0%, 100% { filter: none; translate: 0 0; }
+  20% { filter: hue-rotate(90deg) saturate(3); translate: 7px 0; }
+  40% { filter: hue-rotate(-70deg); translate: -9px 0; }
+  60% { filter: invert(0.75); translate: 4px 0; }
+  80% { filter: hue-rotate(180deg) contrast(1.6); translate: -3px 0; }
+}
+
+/* Dock tab: narrower cards, so all the effects fit without scrolling. */
+#ginzzzu-npc-dock.effects-mode {
+  --ginzzzu-npc-dock-card-size: 76px;
+}
+
+#ginzzzu-npc-dock.effects-mode .toolbar .left {
+  visibility: hidden;
+}
+
+#ginzzzu-npc-dock.effects-mode .npcs .rail .item {
+  width: 100%;
+  height: 100%;
+}
+
+#ginzzzu-npc-dock .item.fx-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 18px;
+  box-sizing: border-box;
+  color: #eee;
+}
+
+#ginzzzu-npc-dock .item.fx-item > i {
+  font-size: 30px;
+}

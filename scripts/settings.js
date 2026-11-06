@@ -6,7 +6,8 @@ const SETTINGS_GROUPS = [
   {
     id: "quick",
     keys: [
-      "hidePortraits"
+      "hidePortraits",
+      "effectsCalm"
     ]
   },
   {

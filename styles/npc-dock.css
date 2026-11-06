@@ -486,7 +486,7 @@ body.ginzzzu-sidebar-expanded:not(.ginzzzu-sidebar-content-active).ginzzzu-quick
 
 #ginzzzu-npc-dock .dock-tabs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   margin-bottom: 6px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;

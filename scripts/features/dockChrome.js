@@ -6,6 +6,7 @@ import "./personas/picker.js";
 import "./locations/picker.js";
 
 const MODE_KEY = "locationDockMode";
+const EFFECTS_MODE_KEY = "effectsDockMode";
 export const PERSONA_DOCK_SEARCH_KEY = "personaDockSearch";
 export const LOCATION_DOCK_SEARCH_KEY = "locationDockSearch";
 
@@ -17,12 +18,27 @@ export function isLocationDockMode() {
   }
 }
 
-export function registerDockChromeSettings() {
-  game.settings.register(MODULE_ID, MODE_KEY, { scope: "client", config: false, type: Boolean, default: false });
+export function isEffectsDockMode() {
+  try {
+    return !!game.settings.get(MODULE_ID, EFFECTS_MODE_KEY);
+  } catch {
+    return false;
+  }
 }
 
-export async function setLocationDockMode(on) {
-  await game.settings.set(MODULE_ID, MODE_KEY, !!on);
+export function registerDockChromeSettings() {
+  game.settings.register(MODULE_ID, MODE_KEY, { scope: "client", config: false, type: Boolean, default: false });
+  game.settings.register(MODULE_ID, EFFECTS_MODE_KEY, { scope: "client", config: false, type: Boolean, default: false });
+}
+
+function currentDockTab() {
+  if (isEffectsDockMode()) return "effects";
+  return isLocationDockMode() ? "scene" : "personas";
+}
+
+async function setDockTab(tab) {
+  await game.settings.set(MODULE_ID, EFFECTS_MODE_KEY, tab === "effects");
+  if (tab !== "effects") await game.settings.set(MODULE_ID, MODE_KEY, tab === "scene");
   globalThis.GinzzzuNPCDock?.rebuild?.();
 }
 
@@ -57,15 +73,16 @@ function ensureDockTabs(root) {
   tabs.innerHTML = `
     <button type="button" class="dock-tab" data-dock-tab="personas" role="tab">${tPersona("tabPersonas")}</button>
     <button type="button" class="dock-tab" data-dock-tab="scene" role="tab">${tLocation("tabScene")}</button>
+    <button type="button" class="dock-tab" data-dock-tab="effects" role="tab">${game.i18n.localize("GINZZZUPORTRAITS.Effects.tab")}</button>
   `;
   tabs.addEventListener("click", async event => {
     const tab = event.target.closest("[data-dock-tab]");
     if (!tab) return;
     event.preventDefault();
-    const next = tab.dataset.dockTab === "scene";
-    if (next === isLocationDockMode()) return;
-    await setLocationDockMode(next);
-    if (next && root.classList.contains("collapsed")) {
+    const next = tab.dataset.dockTab;
+    if (next === currentDockTab()) return;
+    await setDockTab(next);
+    if (next === "scene" && root.classList.contains("collapsed")) {
       root.querySelector("#ginzzzu-npc-collapse")?.click();
     }
   });
@@ -83,19 +100,27 @@ function readSearch(key) {
 
 export function applyDockPanelChrome(root) {
   if (!root) return;
-  const locationMode = isLocationDockMode();
+  const activeTab = currentDockTab();
+  const effectsMode = activeTab === "effects";
+  const locationMode = activeTab === "scene";
+  root.classList.toggle("effects-mode", effectsMode);
   root.classList.toggle("locations-mode", locationMode);
-  root.classList.toggle("personas-mode", !locationMode);
+  root.classList.toggle("personas-mode", activeTab === "personas");
   const tabs = ensureDockTabs(root);
   tabs?.querySelectorAll("[data-dock-tab]").forEach(tab => {
-    const on = (tab.dataset.dockTab === "scene") === locationMode;
+    const on = tab.dataset.dockTab === activeTab;
     tab.classList.toggle("is-active", on);
     tab.setAttribute("aria-selected", on ? "true" : "false");
   });
   const libraryBtn = ensureLibraryButton(root);
   if (libraryBtn) {
-    libraryBtn.hidden = false;
+    libraryBtn.hidden = effectsMode;
     libraryBtn.title = locationMode ? tLocation("openLibrary") : tPersona("openLibrary");
+  }
+
+  const sourceLabel = root.querySelector(".toolbar .right label");
+  if (sourceLabel) {
+    sourceLabel.textContent = game.i18n.localize(effectsMode ? "GINZZZUPORTRAITS.Effects.target" : "GINZZZUPORTRAITS.displaySrc");
   }
 
   const searchEl = root.querySelector("#ginzzzu-npc-search");
@@ -107,6 +132,7 @@ export function applyDockPanelChrome(root) {
 
   const clearBtn = root.querySelector("#ginzzzu-npc-clear");
   if (clearBtn) {
-    clearBtn.title = locationMode ? tLocation("clearLocation") : tPersona("clearCast");
+    if (effectsMode) clearBtn.title = game.i18n.localize("GINZZZUPORTRAITS.Effects.clear");
+    else clearBtn.title = locationMode ? tLocation("clearLocation") : tPersona("clearCast");
   }
 }

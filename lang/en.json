@@ -8,6 +8,24 @@
     "displaySrc": "Source:",
     "allFolders": "(all folders)",
     "hideAllPortraits": "Hide all portraits",
+    "Effects": {
+      "tab": "Effects",
+      "target": "For:",
+      "targetAll": "Everyone",
+      "clear": "Clear all effects",
+      "onlyFor": "Only for: {name}",
+      "notOnStage": "Effects work only on the theatre scene",
+      "keybinding": "Effect: {name}",
+      "flash": "Flash",
+      "shake": "Shake",
+      "heart": "Heartbeat",
+      "glitch": "Glitch",
+      "curtain": "Curtain",
+      "frenzy": "Frenzy",
+      "rot": "Rötschreck",
+      "memory": "Memory",
+      "freeze": "Freeze"
+    },
     "PortraitToolbar": {
       "None": "Clear emotion",
       "Joy": "Joy",
@@ -238,6 +256,10 @@
       "npcDockRows": {
         "name": "NPC Dock: NPC rows",
         "hint": "How many NPC rows to show in the dock. Increasing this value also increases the panel height."
+      },
+      "effectsCalm": {
+        "name": "Effects without flashes and shaking",
+        "hint": "Turns off the flash, shake and glitch on this client and stops the frenzy from pulsing. For anyone bothered by sudden effects. The same happens when the system asks to reduce motion."
       },
       "performanceMode": {
         "name": "Performance mode",

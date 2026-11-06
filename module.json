@@ -2,11 +2,11 @@
   "id": "theatre-of-mind",
   "title": "Theatre of Mind",
   "description": "Theatre portraits, persona library, and location dock.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "url": "https://github.com/himselfego/theatre-of-mind",
   "bugs": "https://github.com/himselfego/theatre-of-mind/issues",
   "manifest": "https://github.com/himselfego/theatre-of-mind/releases/latest/download/module.json",
-  "download": "https://github.com/himselfego/theatre-of-mind/releases/download/v1.0.1/theatre-of-mind.zip",
+  "download": "https://github.com/himselfego/theatre-of-mind/releases/download/v1.1.0/theatre-of-mind.zip",
   "library": "false",
   "socket": true,
   "compatibility": {
@@ -42,7 +42,8 @@
     "styles/emotions.css",
     "styles/library.css",
     "styles/locations.css",
-    "styles/personas.css"
+    "styles/personas.css",
+    "styles/effects.css"
   ],
   "languages": [
     {

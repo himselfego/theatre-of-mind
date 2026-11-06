@@ -7,6 +7,7 @@ import {
 } from "./locations/dock.js";
 import { bindRemoteLocationTransition } from "./locations/stage.js";
 import { bindLocationTitleHooks } from "./locations/title.js";
+import { bindStageWeatherHooks } from "./locations/weather.js";
 
 Hooks.once("init", () => {
   game.settings.register(MODULE_ID, SETTING_KEY, {
@@ -21,5 +22,6 @@ Hooks.once("init", () => {
 Hooks.once("ready", () => {
   bindLocationDockHooks();
   bindLocationTitleHooks();
+  bindStageWeatherHooks();
   bindRemoteLocationTransition();
 });
